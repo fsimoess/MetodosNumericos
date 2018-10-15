@@ -1,0 +1,649 @@
+- 09/08/2018
+	==> Zeros Reais de Funções (raízes)
+
+		Problema: Existe x E Reais tal que f(x) = 0?
+
+		Ex.: f(x) = x-2
+			 f(x) =0 <==> x-2 = 0 <==> x = 2
+
+		Os zeros são os pontos onde o gráfico intercepta o eixo x do plano cartesiano [IMAGEM DE PLANO]
+
+		Encontrar se há solução, e se há, ela é única ou não?
+
+		Problema: Determina x/f(x) = 0
+
+				  f(x) = x * ln(x) - 1 (???)
+
+		Teorema de Bolzano: 
+
+			[GRAFICOS] - Gráficos sem continuidade não importam. Continuidade é algo importante
+					   - Se f(a) é + e f(b) também, não há garantia de ter passado pelo 0 da função
+					   - Se f(a) é - e f(b) é +, a função garante que houve intersecção em f(x)=0
+
+			Se f(x) é uma função contínua num intervalo [a,b], e f(a) * f(b) < 0, então existe pelo menos um ponto x = y tal que f(y) = 0.
+			//Garante pelo menos uma, pois não há como prever se há "ondulações da função"
+			//Não é necessário sair de negativo pra positivo, pois pode ser uma função decrescente
+			//Caso [a,b] não garanta a condição f(a)*f(b) < 0, reduzir o intervalo [a-E,b-E]
+
+			Exemplo: f(x) = x² -2
+
+					 y/f(y) = 0
+
+					 a=0, avaliar f(a) => f(0) = -2
+					 b=3, avaliar f(b) => f(3) = 7
+					 f(a)*f(b) = -14
+
+					 [FAZER GRAFICO]
+					 sai de um valor negativo e chega a um valor positivo (de -2 pra +7)
+
+					 ------------------------------------------------------------------------------
+
+					 g(x) = x * ln(x) - 1
+					 y/g(y) = 0
+
+					 a=1, avaliar g(a) => g(1) = 1*ln(1)-1 => -1
+					 b=2.5, avaliar g(b) => g(2.5) = 2.5*ln(2.5)-1 > 0
+
+			Método Gráfico: consiste em transformar o problema f(x)=0 num problema equivalente do tipo: g(x) = h(x).
+				Isto é, determina y solução de f(x)=0 será equivalente a determinar y tal que g(y) = h(y)
+
+				Exemplo: f(x) = x²-2
+									   f(x)=0 <==> g(x)=h(x)
+						 f(x) = 0 <==> x²-2=0 <==> x² = 2
+						 f(x) = 0 <==> x²-2=0 <==> x = 2/x
+
+						 [FAZER GRÁFICO]
+						 Caso gráfico de g(x) e h(x) se cruzem em algum ponto, existem soluções para f(x) nesses dois pontos
+
+			Se f(x) é contínua em [a,b] e f(a)*f(b)<0 então existe, pelo menos um ponto x=y pertencente (a,b) tal que f(y)=0
+			Se f(x) é contínua em [a,b] e f(a)*f(b)<=0 então existe, pelo menos um ponto x=y pertencente [a,b] tal que f(y)=0
+			//Pra f(a) ou f(b) sere iguais a 0, o intervalo de a,b precisaria ser fechado
+
+		Método da Bisseção (Dividir e Conquistar)
+			Entre um ponto a e b, encontrar o pm entre os dois
+			Avaliar f(pm) e realizar o Teorema de Bolzano entre (a,pm) e (pm,b)
+			O intervalo que não satisfazer o teorema é descartado
+			Método Numérico só encontra uma solução
+			A precisão do intervalo a, b é importante
+
+		Os métodos numéricos para zeros de funções são divididos em duas classes:
+			- Intervalares:
+				Determinar através do Teorema de Bolzano intervalos que contenham y cada vez menores, de tal forma que uma determinada precisão seja alcançada.
+				//Garantia de solução
+				//Extremamente lentos
+			- Iterativos:
+				Partem de uma aproximação inicial (x0) e através de um processo iterativo, determinam x1, x2, x3, ... que sob determinadas condições convergem para y.
+				//Rápido
+				//Pode não encontrar solução
+
+		//Para encontrar solução, usar Teorema de Bolzan ou gráfico
+
+		Métodos Intervalares
+			- Método da Bisseção
+				- Consiste na aplicação sucessiva do Teorema de Bolzano.
+				
+			- Método da Falsa Posição (Cordas)
+
+		Métodos Iterativos
+			- Métodos de Newton
+			- Método do Ponto Fixo
+			- Método das Secantes
+
+- 13/08/2018
+	==> Método da Bisseção
+		Consiste na aplicação sucessiva do Teorema de Bolzano 
+
+		==> ERRO:
+			Erro Absoluto: O erro absoluto de uma grandeza (EAx), é a diferença entre o valor exato (x) e sua aproximação (~x)
+				EAx = x - ~x
+
+				Na prática, é impossível de se calcular o EAx que para tal, era necessário conhecer o valor exato x (o que não ocorre). Usamos um limitante superior para "estimar" a medida do erro absoluo.
+
+				EA√2 = √2 - ~√2 ==> √2 - 1,41
+				~√2 = 1,41
+
+				EApi = pi - ~pi ==> pi - 3
+				~~pi = 3
+
+				√2 E (1,41, 1,42)
+				  1,42 - 1,41 = 0,01
+
+				  o--------------------------------------o
+				 1,41                                   1,42
+				  |--------------------------------------|
+				                  <0,01
+
+				Se tomarmos ~√2 E (1,41, 1,42) então |EA√2| = |√2 - ~√2| < 0,01
+
+				pi E (3,1, 3,2)
+
+				  o-----------------------------o
+				 3,1                           3,2
+
+				Se tomarmos ~pi E (3,1, 3,2) então |EApi| = |pi - ~pi| < 0,1
+
+				Agora considere o exemplo:
+
+					Seja x um número aproximado por ~x = 5,3 de forma que |EAx| < 0,1
+					x E (5,2, 5,4)
+					  o-----------------------|----------------------o
+					 5,2                     5,3                    5,4
+
+					Seja y um número aproximado por ~y = 1234,3 de tal forma que |EAx| < 0,1
+					y E (1234,2, 1234,4)
+
+				? Podemos afirmar que ~x representa tão bem x quanto ~y representa y ?
+
+			Erro Relativo: O erro relatio (ERx) é definido como sendo o EAx dividido pela aproximação ~x
+
+				ERx = EAx/~x
+
+				Para os exemplos anteriores:
+
+				ERx = EAx/~x
+
+					|ERx| = |EAx|/|~x|
+					|ERx| = |0,1|/|5,3|
+
+					|EAx|/|~x| < 0,1/|~x|
+
+					|ERx| < 0,1/|~x|
+					|ERx| < 0,1/5,3
+					|ERx| < 0,01886
+
+				ERy = EAy/~y
+
+					|ERy| = |EAy|/|~x|
+
+					|EAy|/|~y| < 0,1/|~y|
+
+					|ERy| < 0,1/|~y|
+
+					|ERy| < 0,1/1234,3
+
+					|ERy| < 0,000081
+
+				O erro relativo é melhor de ser usado pq leva em conta as grandezas trabalhadas
+
+		==> CRITÉRIOS DE PARADA:
+			(1) |bn - an| < e, e: tolerância desejada
+			(2) |f(~x)| < e
+
+- 16/08/2018
+	==> Método iterativo:
+		-> Sequência de instruçõs que são executadas passo a passo, algumas das quais repetidas em cicloes. A execução de um ciclo recebe o nome de iteração. Cada iteração utiliza resultados das iterações anteriores e efetua testes (Critédio de parada*) que verificam se foi atingido um resultado próximo do resultado desejado.
+
+		Para problemas de zeros de funções, utilizamos:
+		(1) | ~x - si | < erro (e)
+		ou
+		(2) | f(~x) | < erro (e)
+
+		~x: solução aproximada
+		si: solução exata
+
+		Para utilizar (1), como não conhecemos a solução exata, si, reduzimos o intervalo [a,b] que contém a raiz a cada iteração, assim se:
+			|b - a| < e e si E (a,b)
+						  ~x E (a,b)
+
+	==> Convergência do Método da Bisseção:
+
+		//ir pra solução
+
+		 |--si-------|-------|
+		a0              b0
+		 |--si--|----|
+		a1           b1
+		 |--si|--|
+		a2       b2
+		 |--si|
+		a3    b3
+		.
+		.
+		.
+
+
+		lim n->inf bn-an=0
+				   bn-an = 1/2(bn-1 - an-1) = 1/2(1/2(bn-2 - an-2))
+				 = 1/2² (bn-2 - an-2) = 1/2²(1/2(bn-3 - an-3))
+				 = 1/2³(bn-3 - an-3) = ... = 1/2^n(b0 - a0)
+
+				 bn - an = 1/2^n (b0 - a0)
+
+		lim n->inf bn - an => lim n->inf 1/2^n (b0 - a0)
+							= (b0 - a0) lim n->inf 1/2^n
+
+		.: lim n->inf bn - an = 0,
+		logo o Método converge para si solução de f(x)=0.
+
+	*** Método da Bisseção:
+
+		*** Algoritmo - Método da Bisseção
+			(1) Entrada das variáveis (função, a, b, tolerância)
+			(2) Método da Bisseção
+			(3) Saída
+		*** Fim do algoritmo
+
+		(1) Entrada das váriaveis
+			("Entre com a função f(x) = ")
+			("Entre com o limite inferior do intervalo a = ")
+			("Entre com o limite superior do intervalo b = ")
+			("Entre com a tolerância desejada e = ")
+
+		(2) Método da Bisseção
+			Calcule f(a)
+			Calcule f(b)
+			Calcule intervalo = |b-a|
+
+			enquanto intervalo > e faça
+				Calcule pm = a+b/2
+				Calcule f(pm)
+
+				se |f(pm)| < e então
+					Escreva("a solução foi obtida")
+					Escreva("exiba solução")
+					pare o programa
+				fim se
+
+				se f(a)*f(pm) < 0 então
+					b = pm
+					f(b) = f(pm)
+				senão
+					a = pm
+					f(a) = f(pm)
+				fim se
+
+				intervalo = |b-a|
+			fim enquanto
+
+		(3) Saída
+			Escreva("A solução foi obtida")
+			Escreva("Exiba solução")
+
+		Outra forma...
+
+		Ex.: f(x) = x² - 2
+		 a=0 f(0) = -2 } f(a)*f(b) = -4 < 0
+		 b=2 f(2) = 2  }
+		 e = 0.01
+		 n = ? bn - an < e
+
+	 	 bn - an = 1/2^n (b0 - a0)...
+
+		 1/2^n (b0 - a0) < e
+		 (b0 - a0) < 2^n * e
+		 (b0 - a0)/e < 2^n
+
+		 2^n > b0 - a0
+		 log 2^n = log (b0 - a0 / e)
+
+		 n log 2 = log (b0 - a0) - log(e)
+
+		 n > log(b0 - a0) - log(e) / log(2)
+
+		 Para o exemplo:
+		 	n > log(2 - 0) - log (0.01) / log(2)
+		 	n > 8,72
+		 	n = 9.;
+
+		Calcule n = log(b-a) - log(e) / log(2)
+		Arredonde n (ceil(n))
+
+		(2) Método da Bisseção by Japa
+		para i variando de 1 até n faça
+			calcule pm = a+b/2
+			calcule f(pm)
+			se f(a)*f(pm) < 0 então
+				b = pm
+				f(b) = f(pm)
+			senão
+				a = pm
+				f(a) = f(pm)
+			fim se
+		fim para
+
+	==> Método da Falsa Posição (das Cordas):
+		O método da Bisseção pode ser visto como sendo a média aritmética entre a e b, isto é, x = a + b / 2 e não "carrega" nenhuma informação adicional no sentido de acelerar a busca da seleção.
+		No gráfico mostra que f(a) está mais próximo de 0 do que o valor de f(b), então, por continuidade, é de se esperar que a solução esteja ais próxima de a do que de b e o Método da Bisseção não carrega esta informação.
+
+		(a, f(a))   (b, f(b))
+
+		y - y0 = m(x - x0)
+		y - f(a) = m(x - a), delta Y / delta X
+
+		y - f(a) = f(b) - f(a) * (x - a)
+		           -----------
+				      b - a
+
+		(~x, 0) E reta
+
+		0 - f(a) = f(b) - f(a) * (~x - a)
+		           -----------
+				      b - a
+
+		- f(a) * (b-a) = (f(b) - f(a)) * (~x - a)
+
+		-b*f(a) + a*f(a) = (f(b)-f(a))*~x - (f(b)-f(a))*a
+		-b*f(a)+a*f(a) = (f(b)-f(a))*~x - a*f(b) + a*f(a)
+
+		a*f(b) - b*f(a) = (f(b) - f(a))*~x
+
+		~x = a*f(b) - b*f(a)
+			 --------------      **MÉTODO DA FALSA POSIÇÃO**
+			  f(b) - f(a)
+		
+- 20/08/2018
+	==> PRÁTICA
+		- BISSEÇÃO
+		- CORDAS
+
+- 23/08/2018
+	==> MÉTODOS ABERTOS
+		Não existe "a priori" garantias de convergência
+		(Teorema de Bolzano não funciona)
+
+	==> MÉTODO DE NEWTON
+		MÉTODO DE NEWTON-RAPHSON
+		MÉTODO DAS TANGENTES
+
+		y-f(x0) = f'(x0)*(x-x0) [reta]
+		x = x1
+
+		x1 = x0 - f(x0)/f'(x0) //encontra um X onde o valor de f(x) = 0
+		x1, x2, x3... converge pra solução
+
+		y-f(x1) = f'(x1)*(x2-x1)
+		x2 = x1 - f(x1)/f'(x1)
+		.
+		.
+		.
+		xn+1 = xn - f(xn)/f'(xn),  n = 0,1,2..., x0 dado.
+
+		==> Método de parada = |f(xn+1)| < erro
+							 = |xn+1 - xn|/|xn-1| < e
+
+	==> ALGORITMO MÉTODO DE NEWTON
+
+		Algoritmo
+			(1) Entradas
+			(2) Método de Newton
+			(3) Saída
+		fim-algritmo
+
+		(1)Entradas
+			('Entre com a função f(x) = ');
+			('Entre com o ponto inicial x0: ');
+			('Entre com o erro: ');
+			('Entre com o n máximo: ');
+
+		(2)Método de Newton
+			Calcule f(x0)
+			Calcule f'(x0)
+			Calcule x1 = x0 - f(x0)/f'(x0)
+
+			se |f(x1) < erro|
+				encontrou pela imagem
+				pare
+			fim-se
+
+			erro = |x1 - x0|/|x1|
+			x0 = x1
+			n++;
+
+	==> MÉTODO DAS SECANTES
+		f'(x) ~= lim h->0   f(x+h)-f(x) / h
+
+		Do Método de Newton:
+
+		xn+1 = xn - f(xn)/f'(xn)
+
+		...
+
+		xn+1 = xn - f(xn)*(xn-xn-1)
+					--------------
+					f(xn)*f(xn-1)
+
+		ou
+
+		xn+1 = xn-1*f(xn) - xn*f(xn-1)
+		       ----------------------
+		       f(xn) - f(xn-1)
+
+		       n=1,2,3..	
+
+- 27/08/2018
+	==> PRÁTICA
+	Newton e Secante
+
+- 30/08/2018
+	==> CONSIDERAÇÕES FINAIS SOBRE MÉTODOS PARA ZEROS DE FUNÇÕES
+		Do método de Newton, temos:
+
+		Xn+1 = Xn - f(Xn)/f'(Xn)   (*)
+
+		Considerando si a solução exata, isto é, f(si)=0 e subtraindo ambos os membros de (*), si, obtemos:
+
+		Xn+1 - si = Xn - si - f(Xn)/f'(Xn)
+
+		en+1 = en - f(Xn)/f'(Xn)
+
+		Escrevemos a série de Taylor:
+			f(x) = f(x0) + (x-x0)*f'(x0)+(x-x0)² * f''(x0)/2! + ...
+
+		Em torno de Xn é dado por:
+			f(X) = f(Xn) + (X-Xn) * f'(Xn) + (X-Xn)² * f''(Xn)/2
+
+		Se X = si
+
+		f(si) = f(Xn) + (si-Xn) * f'(Xn) + (si-Xn)² * f''(Xn)/2
+		0 = f(Xn) + (si - Xn) * f'(Xn) + (si-Xn)² * f''(Xn)/2
+
+		0 = f(Xn) - (Xn-si) * f'(Xn) + (si-Xn)² * f''(Xn)/2
+		0 = f(Xn) - en * f'(Xn) + en² * f''(Xn)/2
+
+		0 = f(Xn)/f'(Xn) - en * f'(Xn)/f'(Xn) + en² * f''(Xn)/2f'(Xn)
+
+		en - f(Xn)/f'(Xn) = en * f''(Xn)/2f'(Xn)
+
+		en+1 = en² * f''(Xn)/2f'(Xn)
+		*** en+1 = k*en² ***
+
+		A ordem de convergência do Método de Newton é quadrática
+
+
+
+	==> Resolução Numérica de Sistemas de Equações Lineares:
+			Definição 1: Uma equação linear nas variáveis x1, x2,..., xn é uma equação da forma:
+				a1x1 + a2x2 + ... + anxn = b onde
+
+				ai pertence aos R e 1<=i<=n
+				b pertence aos R
+
+			Um sistema de n equação a n variáveis é um sistema do tipo:
+
+			a11x1 + a12x2 + a13x3 + ... + a1nxn = b1
+			a21x1 + a22x2 + a23x3 + ... + a2nxn = b2
+			.
+			.
+			.
+			an1x1 + an2x2 + an3x3 + ... + annxn = bn  (*)
+
+
+			Na forma matricial:
+
+			 _						  _
+			|a11  a12  a13  . . .  a1n |
+			|a21  a22  a23  . . .  a2n |
+			| .                        |
+			| .                        |
+			| .                        |
+			|an1  an2  an3  . . .  ann |
+
+			Uma solução de (*) é um vetor x = (x1, x2, x3, ..., xn) que satisfaz simultaneamente as n equações
+
+			As hipóteses que usaremos para desenvolver métodos numéricos são:
+				o Número de Equações igual o número de variáveis
+				o Existe solução única para o problema, Ax = b
+
+
+			Existem duas classes para resolver sistemas lineares
+				o Métodos Diretos: são aqueles que, a menos de erros de arredondamento, forncem a solução exata, num número finito de operações elementares
+					Li <=>  Lj
+					Li <=> k*Li k=/= 0
+					Li <=> Li + mLj
+
+				o Método Iterativo: Geram uma sequência de vetores {x^k}, a partir de uma aproximação inicial, que sob certas condições converge para x^n solução de Ax=b.
+
+			Problema: Ax = b  (Existe A inverso)
+
+			x = A-¹ * b
+
+			Devemos observar que, no caso de resolver o sistema linear Ax = b <=> x = A-¹ * b
+			no entanto, o cálculo de A-¹ é desaconselhável uma vez que o número de operações envolvidas é muito grande.
+
+			Ex:
+
+
+			    3x1 + 2x2 + 4x3 = 1
+			(1) x1 + x2 + 2x3 = 2
+			    4x1 + 3x2 - 2x3 = 3
+
+			    3x1 + 2x2 + 4x3 = 1
+			(2) 1/3 * x2 + 2/3 * x3 = 5/3
+			    -8x3 = 0
+
+			Xi = bi - (Somatório aij * xj)  , i=n-1,...,3,2,1, j=i+1
+					 ---------------------
+				           adicional
+
+- 03/09/2018
+	==> RESOLUÇÃO DE SISTEMAS LINEARES
+
+		==> MÉTODO DE ELIMINAÇÃO DE GAUSS
+				Consiste na aplicação das operações elementares sobre as linhas da matriz ampliada do sistema linear A*x = b ([A | b]) para transformá-lo num sistema linear equivalente, Ã*x = ~b, onde Ã é uma matriz triangular superior.
+
+				(1) Li <=> Lj (troca de linhas)
+				(2) Li <=> kLi (k=/=0)
+				(3) Li <=> Li + mLj
+
+				Exemplo: 
+					3*x1 + 2*x2 + 4*x3 = 1
+					1*x1 + 1*x2 + 2*x3 = 2
+					4*x1 + 3*x2 - 2*x3 = 3
+
+					A*x = b
+
+					| 3 2 4 ||x1| |1|
+					| 1 1 2 ||x2|=|2|
+					| 4 3 -2||x3| |3|
+
+								| 3 2 4 | 1 |
+					[A0 | b0] = | 1 1 2 | 2 |
+								| 4 3 -2| 3 |
+
+					1º passo: Eliminar os elementos da 1ª coluna abaixo de A[1][1]
+							  m[2][1] = A[2][1]/A[1][1] = 1/3
+							  L2 <=> L2 - m[2][1]*L1   (L2 - L1/3)
+
+								| 3  2   4  |  1  |
+					[A1 | b1] = | 0 1/3 2/3 | 5/3 |
+								| 4  3  -2  |  3  |
+
+							  m[3][1] = A[3][1]/A[1][1] = 4/3
+							  L3 <=> L3 - m[3][1]*L1   (L3 - 4L1/3)
+
+								| 3  2    4  |  1  |
+					[A1 | b1] = | 0 1/3  2/3 | 5/3 |
+								| 0 1/3 -22/3| 5/3 |
+
+					2º passo: Eliminar os elementos da 2ª coluna abaixo de A[2][2]
+							  m[3][2] = A[3][2]/A[2][2] = 1
+							  L3 <=> L3 - m[3][2]*L2   (L3 - 1*L2)
+
+								| 3  2    4  |  1  |
+					[A3 | b3] = | 0 1/3  2/3 | 5/3 |
+								| 0  0   -8  |  0  |
+
+				Seja o sistema linear A*x=b onde A[n][n], b[n][1], x[n][1]
+
+					** Generalizando passo 1 **
+						m[i][1] = a[i][1]
+								  -------
+								  a[1][1]
+						Li <=> Li - m[i][1]*L1
+						i = 2..n
+
+					** MÉTODO DE GAUSS **
+
+						j = 1 .. n-1
+						i = j+1 .. n
+						m[i][j] = a[i][j]
+								  -------
+								  a[j][j]
+						Li <=> Li - m[i][j]*Lj
+						
+						índice = j-1
+
+					** MÉTODO DE GAUSS **
+
+					fazer pra quinta
+					- Fazer caso ideal
+					- Prever linhas com 0 como pivô (pegar o maior em módulo dos elementos de baixo)
+
+- 06/09/2018
+	==> AULA PRÁTICA
+		Método de Gauss
+
+- 10/09/2018
+	==> RESOLUÇÃO DE SISTEMAS EQUACIONAIS LINEARES:
+
+		DECOMPOSIÇÃO POR FATORAÇÃO LU
+			A*x = b
+			L*U*x = b
+
+			L*y = b
+			U*x = y
+
+			matriz L é formada pela matriz identidade e pelos m(i,j) usados
+
+		MÉTODO DE DOOLITTLE
+			L*U = A
+
+			|  1   0   0 |   | u11  u12  u13 |   | a11  a12  a13 |
+			| l21  1   0 | * |  0   u22  u23 | = | a21  a22  a23 |
+			| l31 l32  1 |   |  0    0   u33 |   | a31  a32  a33 |
+
+			1ª linha de U
+				u11 = a11
+				u12 = a12
+				u13 - a13
+
+			1ª coluna de L
+				l21 = a21/a11
+				l31 = a31/a11
+
+			2ª linha de U
+				u22 = a22 - l21*u12
+				u23 = a23 - l21*u13
+
+		MÉTODOS ITERATIVOS:
+			Consiste em transformar o sistema linear Ax = b num sistema linear do tipo: x = Cx + g
+
+			X^k+1	 = C*X^k + g
+
+			|x1|   |  0  -0,1  -0,1|   |x1|   |1,2|
+			|x2| = |-0,1   0   -0,1| = |x2| = |1,2|
+			|x3|   |-0,1 -0,1    0 |   |x3|   |1,2|
+
+			x^0 é informado!!!!
+
+- 13/09/2018
+
+- 17/09/2018
+
+- 20/09/2018
+
+- 24/09/2018
+
+- 27/09/2018
+
+- 01/10/2018
